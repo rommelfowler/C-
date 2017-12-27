@@ -9,73 +9,73 @@
 
 #include <iostream>
 #include <string>
+#include "FBullCowGame.hpp"
 
-// using namespace std; TO DANGEROUS!! 
-
-//FUNCTIONS
 void PrintIntro();
 void PlayGame();
-bool AskToPlayAgain();
 std::string GetGuess();
+bool AskToPlayAgain();
 
-//To avoid using magic numbers, we use a const and specify that number.
-//@package constexpr - means that it can be avaluated right now.
-constexpr int WORD_LEGNTH = 5;
+FBullCowGame BCGame; // instantiate a new game
 
-//Entry point for app.
+// the entry point for our application
 int main()
 {
-    bool playAgain = false;
+    bool bPlayAgain = false;
     do {
-        PrintIntro();                       //Print Intro void function
-        PlayGame();                         //For Loop number of guesses
-        playAgain = AskToPlayAgain();           //Bool number of guesses
-        std::cout << std::endl;
-    } while (playAgain);
+        PrintIntro();
+        PlayGame();
+        bPlayAgain = AskToPlayAgain();
+    }
+    while (bPlayAgain);
     
-    return 0;
+    return 0; // exit the application
 }
 
+
+// introduce the game
 void PrintIntro()
 {
-    //========================
-    // Introduce the game
-    //========================
+    constexpr int WORLD_LENGTH = 9;
     std::cout << "Welcome to Bulls and Cows, a fun word game.\n";
-    std::cout << "Can you guess the " << WORD_LEGNTH << " letter isogram I'm thinking of?" << std::endl;
+    std::cout << "Can you guess the " << WORLD_LENGTH;
+    std::cout << " letter isogram I'm thinking of?\n";
     std::cout << std::endl;
+    return;
 }
+
 
 void PlayGame()
 {
-    for(int i = 0; i < WORD_LEGNTH; ++i){
+    BCGame.Reset();
+    int MaxTries = BCGame.GetMaxTries();
+    
+    // loop for the number of turns asking for guesses
+    for (int count = 1; count <= MaxTries; count++) {
         std::string Guess = GetGuess();
-
-        std::cout << "Your guess was " << Guess << std::endl;
+        std::cout << "Your guess was: " << Guess << std::endl;
         std::cout << std::endl;
     }
 }
 
+
 std::string GetGuess()
 {
-    std::string Guess = "";
-
-    //Get a guess from the player
-    std::cout << "Enter your guess: ";
-    //========================
-    //What happens when a user uses two words rather than one common - input? Use getline()
-    //@package - DO NOT USE - std::cin >> Guess;
-    //========================
-    getline(std::cin, Guess);
+    int CurrentTry = BCGame.GetCurrentTry();
     
+    // get a guess from the player
+    std::cout << "Try " << CurrentTry << ". Enter your guess: ";
+    std::string Guess = "";
+    std::getline(std::cin, Guess);
     return Guess;
 }
+
 bool AskToPlayAgain()
 {
+    std::cout << "Do you want to play again (y/n)? ";
     std::string Response = "";
-    
-    std::cout << "Do you want to play again?";
-    getline(std::cin, Response);
+    std::getline(std::cin, Response);
     return (Response[0] == 'y') || (Response[0] == 'Y');
+
     
 }

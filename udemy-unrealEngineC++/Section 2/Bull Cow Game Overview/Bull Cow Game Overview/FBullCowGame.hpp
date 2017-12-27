@@ -10,24 +10,22 @@
 #define FBullCowGame_hpp
 #include <string>
 
-
-#include <stdio.h>
-
-#endif /* FBullCowGame_hpp */
-
-
 class FBullCowGame {
 public:
-    void Reset();   //@TODO - make a more rich return val
-    int GetMaxTries();
-    int GetCurrentTry();
-    bool IsgameWon();
-    bool CheckGuessValidity(std::string); // TODO make more rich return val
+    FBullCowGame(); // constructor
+    
+    int GetMaxTries() const;
+    int GetCurrentTry() const;
+    bool IsGameWon() const;
+    
+    void Reset(); // TODO make a more rich return value.
+    bool CheckGuessValidity(std::string); // TODO make a more rich return value.
     
     
     
-// IGNORE FOR NOW
+    // ^^ Please try and ignore this and focus on the interface above ^^
 private:
+    // see constructor for initialisation
     int MyCurrentTry;
     int MyMaxTries;
 };
