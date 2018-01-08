@@ -10,7 +10,7 @@
 
 using int32 = int;
 
-//Constructor   
+//Constructor   
 FBullCowGame::FBullCowGame() { Reset(); }
 
 int32 FBullCowGame::GetMaxTries() const { return MyMaxTries;}
@@ -21,15 +21,46 @@ void FBullCowGame::Reset()
 {
     constexpr int32 MAX_TRIES = 8;
     const FString HIDDEN_WORD = "planet";
-
     MyMaxTries = MAX_TRIES;
     MyHiddenWord = HIDDEN_WORD;
     MyCurrentTry = 1;
     return;
 }
-bool FBullCowGame::IsGameWon() const { return false; }
-bool FBullCowGame::CheckGuessValidity(std::string) const {  return false; }
-int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
+bool FBullCowGame::IsGameWon() const
+{
+    return false;
+}
+/*
+ NOTES: Make sure to always place a handle when calling something inside.
+ ERROR-CHECKING
+ */
+EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
+{
+    return EGuessStatus::Ok;
+    
+    if(false) //If the guess isn't an isogram,
+    {
+        return EGuessStatus::Not_Isogram;
+    }
+    else if (false)  //if the guess isnt all lowercase
+    {
+        return EGuessStatus::Not_Lowercase;
+    }
+    else if (Guess.length() != GetHiddenWordLength()) // if the guess length is wrong
+    {
+        return EGuessStatus::Wrong_legnth;
+    }
+    else
+    {
+        return EGuessStatus::Ok;
+    }
+    
+   
+}
+int32 FBullCowGame::GetHiddenWordLength() const
+{
+    return MyHiddenWord.length();
+}
 
 
 // receives a VALID guess, incriment turn, and returns count
