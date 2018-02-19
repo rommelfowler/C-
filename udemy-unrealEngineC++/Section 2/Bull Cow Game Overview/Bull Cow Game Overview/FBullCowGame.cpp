@@ -7,43 +7,53 @@
 //
 
 #include "FBullCowGame.hpp"
+#include <map> // Make Map library available
+#define TMap std::map
 
 using int32 = int;
 
 //Constructor   
-FBullCowGame::FBullCowGame() { Reset(); }
+FBullCowGame::FBullCowGame() { Reset(); } //default
 
-int32 FBullCowGame::GetMaxTries() const { return MyMaxTries;}
+
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
+bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 
+int32 FBullCowGame::GetMaxTries() const {
+    TMap<int32, int32> WordLengthToMaxTries {{3,5}, {4,5}, {5,5}, {6,5} };
+    return WordLengthToMaxTries[MyHiddenWord.length()];
+}
 
 void FBullCowGame::Reset()
 {
-    constexpr int32 MAX_TRIES = 8;
+    constexpr int32 MAX_TRIES = 3; //DONT NEED
     const FString HIDDEN_WORD = "planet";
-    MyMaxTries = MAX_TRIES;
+    MyMaxTries = MAX_TRIES;//DONT NEED
     MyHiddenWord = HIDDEN_WORD;
-    MyCurrentTry = 1;
+    MyCurrentTry = false;
     return;
 }
-bool FBullCowGame::IsGameWon() const
-{
-    return false;
-}
+
 /*
  NOTES: Make sure to always place a handle when calling something inside.
  ERROR-CHECKING
  */
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
-    
-    if(false) //If the guess isn't an isogram,
+    /*
+     Avoid implicit dependencies
+     Implicit: suggested though not directly expressed.
+     Dependent: reliant on something else
+     NOTE: An implicit dependency is when it's nto completely clear that one thing depends on another.
+        For example, the order of checks in CheckGuessValidity().
+     */
+    if(!IsIsogram(Guess))
     {
         return EGuessStatus::Not_Isogram;
     }
-    else if (false)  //if the guess isnt all lowercase
+    else if (!IsLowerase(Guess))  //if the guess isnt all lowercase
     {
-        return EGuessStatus::Not_Lowercase;
+        return EGuessStatus::Not_Lowercase; //TODO write function
     }
     else if (Guess.length() != GetHiddenWordLength()) // if the guess length is wrong
     {
@@ -54,14 +64,12 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
         return EGuessStatus::Ok;
     }
     return EGuessStatus::Ok;
-
-   
 }
+
 int32 FBullCowGame::GetHiddenWordLength() const
 {
     return MyHiddenWord.length();
 }
-
 
 // receives a VALID guess, incriment turn, and returns count
 BullCowCount FBullCowGame::SubmitGuess(FString Guess)
@@ -84,12 +92,50 @@ BullCowCount FBullCowGame::SubmitGuess(FString Guess)
                     BullCowCount.Bulls++;
                 }
             }
-           
         }
-        
      }
+    if (BullCowCount.Bulls == WordLength) {
+        bGameIsWon = true;
+    } else {
+        bGameIsWon = false;
+    }
     return BullCowCount;
 }
+
+bool FBullCowGame::IsIsogram(FString Word) const
+{
+    // treat 0 and 1 letter words as isogram
+    if (Word.length() <= 1) {
+        return true;
+    }
+    TMap<char,bool> LetterSeen; // setup our map
+    for (auto Letter : Word) // for all LETTERS of the WORD
+    {
+        // loop through all the letters of the word
+        Letter = tolower(Letter); // handle mixed case
+        
+        // if the letter is in the map
+        if (LetterSeen[Letter]) {
+            return false; // We do not have isogram
+        } else {
+            // add the letter to the map as seen
+            LetterSeen[Letter] = true;
+        }
+    }
+    return true; // for examples in cases where /0 is entered
+}
+
+bool FBullCowGame::IsLowerase(FString Word) const {
+    for (auto Letter : Word)
+    {
+        if(!islower(Letter)) // if not a lowercase letter
+            //then return false
+            return false;
+    }
+    return true;
+}
+
+
 
 
 

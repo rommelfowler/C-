@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Bull Cow Game Overview/FBullCowGame.cpp"
-            timestampString = "537918562.030637"
+            timestampString = "539037587.915234"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "FBullCowGame::CheckGuessValidity(FString Guess)"
             landmarkType = "7">
          </BreakpointContent>
